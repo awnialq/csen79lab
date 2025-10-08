@@ -6,6 +6,8 @@
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
+#include <fstream>
+#include <cassert>
 #include "person.h"
 #include "roster.h"
 
@@ -22,17 +24,34 @@ int main() {
 	Person st;
 	Person::ID_t id;
 	string cmd, first, last;
-
 	// Read cmd first, then branch accordingly
 	while (cin >> cmd) {
 		switch (cmd[0]) {
 		case Command::Add:
+			cin >> id;
+			cin >> first;
+			cin >> last;
+			try
+			{
+				r.insert(Person(id, first, last));
+			}
+			catch(const std::exception& e)
+			{
+				std::cerr << e.what() << endl;
+			}
 			// Insert a record
 			// STUDENT WORK
 			break;
 		case Command::Erase:
-			// remove a record, given the ID
-			// STUDENT WORK
+			cin >> id;
+			try
+			{
+				r.erase(id);
+			}
+			catch(const std::exception& e)
+			{
+				std::cerr << e.what() << endl;
+			}
 			break;
 		case Command::Print:
 			// listing the entire roster with a rudimentary iterator
