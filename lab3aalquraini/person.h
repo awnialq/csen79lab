@@ -1,7 +1,7 @@
 /*
- * CSEN 79 Concrete Class
- * Plain Old Data Example
- * Person
+* CSEN 79 Lab 3 Class Roster - person header file
+* Name: Awni AlQuraini
+* Email: aalquraini@scu.edu
  */
 #ifndef PERSON_H
 #define PERSON_H

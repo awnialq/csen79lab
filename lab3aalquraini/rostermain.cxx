@@ -1,5 +1,7 @@
 /*
- * CSEN 79 Lab Sample Code
+ * CSEN 79 Lab 3 Class Roster - main tester file
+ * Name: Awni AlQuraini
+ * Email: aalquraini@scu.edu
  */
 #include <cstddef>
 #include <string>
@@ -24,33 +26,32 @@ int main() {
 	Person st;
 	Person::ID_t id;
 	string cmd, first, last;
+
 	// Read cmd first, then branch accordingly
 	while (cin >> cmd) {
 		switch (cmd[0]) {
 		case Command::Add:
-			cin >> id;
+			cin >> id;		//parse the id, first, and last name in the row
 			cin >> first;
 			cin >> last;
-			try
+			try	//try inserting the person 
 			{
 				r.insert(Person(id, first, last));
 			}
-			catch(const std::exception& e)
+			catch(const std::exception& e) // if there is no space catch the exception and print out the exception
 			{
-				std::cerr << e.what() << endl;
+				cout << e.what() << endl;
 			}
-			// Insert a record
-			// STUDENT WORK
 			break;
 		case Command::Erase:
-			cin >> id;
+			cin >> id;	//parse the id you want to delete in the row
 			try
 			{
-				r.erase(id);
+				r.erase(id); //try to erase that id
 			}
-			catch(const std::exception& e)
+			catch(const std::exception& e) // if the id does not exist catch the exception and print out the exception
 			{
-				std::cerr << e.what() << endl;
+				cout << e.what() << endl;	
 			}
 			break;
 		case Command::Print:

@@ -1,6 +1,7 @@
 /*
- * CSEN 79 Lab3
- * Student Roster
+* CSEN 79 Lab 3 Class Roster - roster header file
+* Name: Awni AlQuraini
+* Email: aalquraini@scu.edu
  */
 #ifndef ROSTER_H
 #define ROSTER_H

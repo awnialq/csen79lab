@@ -1,5 +1,7 @@
 /*
- * CSEN 79 Lab Sample Code
+* CSEN 79 Lab 3 Class Roster - Roster implementation file
+* Name: Awni AlQuraini
+* Email: aalquraini@scu.edu
  */
 #include <string>
 #include <iostream>
@@ -39,12 +41,13 @@ namespace csen79 {
 				break;
 			}
 		}
-		if(!is_found){throw std::invalid_argument("ID does not exist");}
+		if(!is_found){throw std::invalid_argument("ID does not exist in the roster");}
 	}
 
 	// rudimentary iterator
 	// in the future, this will return an object of iterator type
 	Roster::T* Roster::begin(void) {
+		idx = 0;
 		return &roster[0];
 	}
 
@@ -56,9 +59,6 @@ namespace csen79 {
 	// The next element for interation
 	// if already reached the end, throw exception
 	Roster::T* Roster::next(void) {
-		if(idx >= last){
-			idx = 0;
-		}
 		return &roster[++idx];
 	}
 }
