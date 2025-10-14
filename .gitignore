@@ -1,2 +1,2 @@
 *.tar
-*./lab1_demo
+/lab1_demo
