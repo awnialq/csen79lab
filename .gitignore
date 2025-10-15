@@ -1,2 +1,3 @@
 *.tar
+*.o
 /lab1_demo

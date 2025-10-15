@@ -10,6 +10,15 @@
 #include "roster.h"
 #include "rosterptr.h"
 
+/*
+*   Instructions to other tester: 
+*       Using the makefile provided, compile the program. After doing so, prepare your own test file in a similar format to lab4test.txt
+*       Then, exectue the program like so: ./rosterptrtest < [the name of your test file] > output.log
+*       After doing so, go through output.log to see what the program outputs and compare it to your expected behaviour
+*       Make sure to test removing non-existent ids to see how the program handles them.
+*       This testing function should handle this testing flow.
+*/
+
 namespace csen79 {
 
 void RosterPtr::testRoster() {
@@ -25,14 +34,20 @@ void RosterPtr::testRoster() {
             try {
                 this->insert(t); // insert returns if successful
             } catch (std::out_of_range &e) {
-                std::cerr << e.what() << std::endl;
+                std::cout << e.what() << std::endl;
             }
             break;
         case Command::Erase: {
             // remove a record, given the ID
             Person::ID_t id;
             std::cin >> id;
-            this->erase(id);
+            try{
+                this->erase(id);
+            }
+            catch (std::invalid_argument &e){
+                std::cout << e.what() << std::endl;
+                break;
+            }
             std::cout << "Erase " << id << std::endl;
             }
             break;
