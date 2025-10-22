@@ -9,7 +9,7 @@ namespace coen79_lab5{
         current_length = std::strlen(str);
         allocated = current_length + 1;
         characters = new char[allocated];
-        std::strcpy(characters, str);
+        std::strncpy(characters, str, allocated);
     }
 
     string::string(char c) {
@@ -21,7 +21,10 @@ namespace coen79_lab5{
     }
 
     string::string(const string& source){
-
+        current_length = source.current_length;
+        allocated = source.allocated;
+        characters = new char[allocated];
+        std::strncpy(characters, source.characters, allocated);
     }
 
     string::~string(){
@@ -30,19 +33,39 @@ namespace coen79_lab5{
     }
 
     void string::operator +=(const string& addend){
+        while(addend.current_length + current_length + 1 > allocated){
+            reserve(allocated * 2);
+        }
 
+        std::strncat(characters, addend.characters, addend.current_length);
+        current_length += addend.current_length;
     }
 
     void string::operator +=(const char addend[]){
+        while(std::strlen(addend) + current_length + 1 > allocated){
+            reserve(allocated * 2);
+        }
 
+        std::strncat(characters, addend, std::strlen(addend));
+        current_length += std::strlen(addend);
     }
 
     void string::operator +=(char addend){
+        if(current_length + 1 >= allocated){
+            reserve(allocated + 1);
+        }
 
+        characters[current_length++] = addend;
+        characters[current_length + 1] = '\0';
     }
 
     void string::reserve(size_t n){
-
+        if(n  <= allocated){ return; }
+        char *temp = new char[n];
+        std::strncpy(temp, characters, current_length + 1);
+        delete [] characters;
+        characters = temp;
+        allocated = n;
     }
 
     string& string::operator =(const string& source){
@@ -50,11 +73,21 @@ namespace coen79_lab5{
     }
 
     void string::insert(const string& source, unsigned int position){
+        while(source.current_length + position + 1 >= allocated){
+            reserve(allocated * 2);
+        }
 
+        std::strncpy(characters + position, source.characters, source.current_length);
+        current_length = position + source.current_length;
+        characters[current_length + 1] = '\0';
     }
 
     void string::dlt(unsigned int position, unsigned int num){
-
+        for(auto i = position; i <= current_length; i++){
+            characters[i] = characters[i+num];
+        }
+        current_length -= num;
+        characters[current_length] = '\0';
     }
 
     void string::replace(char c, unsigned int position){
