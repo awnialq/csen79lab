@@ -77,6 +77,8 @@ namespace coen79_lab5{
             reserve(allocated * 2);
         }
 
+        
+
         std::strncpy(characters + position, source.characters, source.current_length);
         current_length = position + source.current_length;
         characters[current_length + 1] = '\0';
@@ -91,7 +93,7 @@ namespace coen79_lab5{
     }
 
     void string::replace(char c, unsigned int position){
-
+        characters[position] = c;
     }
 
     void string::replace(const string& source, unsigned int position){
