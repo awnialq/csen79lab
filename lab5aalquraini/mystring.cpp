@@ -1,34 +1,36 @@
 #include <cstring>
 #include <iostream>
+#include <iomanip>
+#include <cctype>
 #include "mystring.h"
 
 
 namespace coen79_lab5{
 
-    string::string(const char str[]) {
-        current_length = std::strlen(str);
-        allocated = current_length + 1;
-        characters = new char[allocated];
-        std::strncpy(characters, str, allocated);
+    string::string(const char str[]) {  // default argument is the empty string.
+        current_length = std::strlen(str); // length without null terminator
+        allocated = current_length + 1; // +1 for null terminator
+        characters = new char[allocated]; // allocate memory
+        std::strncpy(characters, str, allocated); // copy string including null terminator
     }
 
-    string::string(char c) {
-        current_length = 1;
+    string::string(char c) { // construct string from single character
+        current_length = 1; // only one character
         allocated = 2; // one for character and one for null terminator
         characters = new char[allocated];
-        characters[0] = c;
-        characters[1] = '\0';
+        characters[0] = c; 
+        characters[1] = '\0'; // null terminator
     }
 
-    string::string(const string& source){
-        current_length = source.current_length;
+    string::string(const string& source){ //    Copy Constructor.
+        current_length = source.current_length; // length without null terminator
         allocated = source.allocated;
-        characters = new char[allocated];
-        std::strncpy(characters, source.characters, allocated);
+        characters = new char[allocated]; // allocate memory
+        std::strncpy(characters, source.characters, allocated); // copy string including null terminator
     }
 
-    string::~string(){
-        if((characters == nullptr)) { return; }
+    string::~string(){   // Destructor
+        if((characters == nullptr)) { return; } // nothing to delete
         delete [] characters;
     }
 
@@ -52,11 +54,11 @@ namespace coen79_lab5{
 
     void string::operator +=(char addend){
         if(current_length + 1 >= allocated){
-            reserve(allocated + 1);
+            reserve(allocated * 2);
         }
 
         characters[current_length++] = addend;
-        characters[current_length + 1] = '\0';
+        characters[current_length] = '\0';
     }
 
     void string::reserve(size_t n){
@@ -78,18 +80,36 @@ namespace coen79_lab5{
     }
 
     void string::insert(const string& source, unsigned int position){
-        while(source.current_length + position + 1 >= allocated){
+        // position must be valid (allowed to insert at end)
+        if(position > current_length){
+            throw std::out_of_range("Index out of range");
+        }
+
+        // Ensure there is enough space for the new characters + null terminator
+        size_t needed = current_length + source.current_length + 1;
+        while(needed > allocated){
             reserve(allocated * 2);
         }
 
-        
+        // iterate backwards to avoid overwriting
+        for(int i = static_cast<int>(current_length); i >= static_cast<int>(position); --i){
+            characters[i + static_cast<int>(source.current_length)] = characters[i];
+        }
 
-        std::strncpy(characters + position, source.characters, source.current_length);
-        current_length = position + source.current_length;
-        characters[current_length + 1] = '\0';
+        // Copy the source into the gap
+        for(size_t i = 0; i < source.current_length; ++i){
+            characters[position + i] = source.characters[i];
+        }
+
+        // Update length and ensure null termination
+        current_length = current_length + source.current_length;
+        characters[current_length] = '\0';
     }
 
     void string::dlt(unsigned int position, unsigned int num){
+        if(position + num > current_length){
+            throw std::out_of_range("Index out of range");
+        }
         for(auto i = position; i <= current_length; i++){
             characters[i] = characters[i+num];
         }
@@ -98,10 +118,16 @@ namespace coen79_lab5{
     }
 
     void string::replace(char c, unsigned int position){
+        if(position >= current_length){
+            throw std::out_of_range("Index out of range");
+        }
         characters[position] = c;
     }
 
     void string::replace(const string& source, unsigned int position){
+        if(position >= current_length){
+            throw std::out_of_range("Index out of range");
+        }
         if(source.current_length + position > current_length){
             reserve(allocated * 2);
         }
@@ -192,9 +218,19 @@ namespace coen79_lab5{
     }
 
     std::istream& operator >> (std::istream& ins, string& target){
-        while(ins && std::isspace(ins.peek())){
-            ins.ignore();
+        // skip initial whitespace (consume)
+        int ch;
+        while (ins && (ch = ins.peek()) != EOF && std::isspace(static_cast<unsigned char>(ch))){
+            ins.get();
         }
-        
+
+        if (!ins || ins.peek() == EOF) return ins; // nothing to read
+
+        // read a word into a fixed buffer (leave terminating whitespace unread)
+        char buffer[1000];
+        if (!(ins >> std::setw(sizeof(buffer)) >> buffer)) return ins; // extraction failed
+
+        target = string(buffer);
+        return ins;
     }
 }

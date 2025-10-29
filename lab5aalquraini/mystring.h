@@ -153,7 +153,7 @@ namespace coen79_lab5
         friend bool operator <=(const string& s1, const string& s2);
         
     private:
-        char *characters;
+        char *characters = nullptr;
         size_t allocated;
         size_t current_length;
     };
