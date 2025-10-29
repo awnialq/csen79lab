@@ -5,7 +5,7 @@
 
 namespace coen79_lab5{
 
-    string::string(const char str[] = "") {
+    string::string(const char str[]) {
         current_length = std::strlen(str);
         allocated = current_length + 1;
         characters = new char[allocated];
@@ -69,7 +69,9 @@ namespace coen79_lab5{
     }
 
     string& string::operator =(const string& source){
-        std::strncpy(characters, source.characters, allocated);
+        delete [] characters;
+        characters = new char[source.allocated];
+        std::strncpy(characters, source.characters, source.allocated);
         current_length = source.current_length;
         allocated = source.allocated;
         return *this;
@@ -178,11 +180,15 @@ namespace coen79_lab5{
     }
 
     string operator +(const string& s1, const string& s2){
-        return string(s1 += s2);
+        string ret_string(s1);
+        ret_string += s2;
+        return ret_string;
     }
 
     string operator +(const string& s1, const char addend[]){
-        return string(s1 += s2);
+        string ret_string(s1);
+        ret_string += addend;
+        return ret_string;
     }
 
     std::istream& operator >> (std::istream& ins, string& target){
