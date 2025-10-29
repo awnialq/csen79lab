@@ -186,6 +186,9 @@ namespace coen79_lab5{
     }
 
     std::istream& operator >> (std::istream& ins, string& target){
+        while(ins && std::isspace(ins.peek())){
+            ins.ignore();
+        }
         
     }
 }
