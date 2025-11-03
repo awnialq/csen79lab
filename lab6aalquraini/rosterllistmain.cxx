@@ -1,5 +1,8 @@
 /*
- * CSEN 79 Lab Sample Code
+ * CSEN 79 Lab 6 - Main Tester
+ * Instructions on how to write the tester class:
+ * 	1. In order to write this tester, you must utilize the commands defined in roster.h (Erase = 'X', Add = 'A', Print = 'L')
+ *	2. 
  */
 #include <string>
 #include <iostream>
