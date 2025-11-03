@@ -35,53 +35,52 @@ namespace coen79_lab5{
     }
 
     void string::operator +=(const string& addend){
-        while(addend.current_length + current_length + 1 > allocated){
+        while(addend.current_length + current_length + 1 > allocated){  // make sure there is enough space
             reserve(allocated * 2);
         }
 
-        std::strncat(characters, addend.characters, addend.current_length);
-        current_length += addend.current_length;
+        std::strncat(characters, addend.characters, addend.current_length); // concatenate addend
+        current_length += addend.current_length;    // update length
     }
 
-    void string::operator +=(const char addend[]){
-        while(std::strlen(addend) + current_length + 1 > allocated){
+    void string::operator +=(const char addend[]){  // concatenate C-string
+        while(std::strlen(addend) + current_length + 1 > allocated){ // make sure there is enough space
             reserve(allocated * 2);
         }
-
-        std::strncat(characters, addend, std::strlen(addend));
-        current_length += std::strlen(addend);
+        std::strncat(characters, addend, std::strlen(addend)); // concatenate addend
+        current_length += std::strlen(addend); // update length
     }
 
-    void string::operator +=(char addend){
-        if(current_length + 1 >= allocated){
+    void string::operator +=(char addend){  // concatenate single character
+        if(current_length + 1 >= allocated){ // make sure there is enough space
             reserve(allocated * 2);
         }
 
-        characters[current_length++] = addend;
-        characters[current_length] = '\0';
+        characters[current_length++] = addend; // add character and update length
+        characters[current_length] = '\0'; // null terminate
     }
 
     void string::reserve(size_t n){
-        if(n  <= allocated){ return; }
-        char *temp = new char[n];
-        std::strncpy(temp, characters, current_length + 1);
-        delete [] characters;
-        characters = temp;
-        allocated = n;
+        if(n  <= allocated){ return; } // no need to reserve
+        char *temp = new char[n]; // allocate new memory
+        std::strncpy(temp, characters, current_length + 1); // copy existing characters including null terminator
+        delete [] characters; // delete old memory
+        characters = temp; // point to new memory
+        allocated = n; // update allocated size
     }
 
-    string& string::operator =(const string& source){
-        delete [] characters;
-        characters = new char[source.allocated];
-        std::strncpy(characters, source.characters, source.allocated);
-        current_length = source.current_length;
+    string& string::operator =(const string& source){ // assignment operator
+        delete [] characters; // delete old memory
+        characters = new char[source.allocated]; // allocate new memory
+        std::strncpy(characters, source.characters, source.allocated); // copy characters including null terminator
+        current_length = source.current_length; 
         allocated = source.allocated;
-        return *this;
+        return *this; 
     }
 
     void string::insert(const string& source, unsigned int position){
         // position must be valid (allowed to insert at end)
-        if(position > current_length){
+        if(position > current_length){ 
             throw std::out_of_range("Index out of range");
         }
 
@@ -107,44 +106,44 @@ namespace coen79_lab5{
     }
 
     void string::dlt(unsigned int position, unsigned int num){
-        if(position + num > current_length){
+        if(position + num > current_length){ // validate range
             throw std::out_of_range("Index out of range");
         }
-        for(auto i = position; i <= current_length; i++){
+        for(auto i = position; i <= current_length; i++){ // shift characters left
             characters[i] = characters[i+num];
         }
-        current_length -= num;
-        characters[current_length] = '\0';
+        current_length -= num; // update length
+        characters[current_length] = '\0'; // null terminate
     }
 
-    void string::replace(char c, unsigned int position){
-        if(position >= current_length){
+    void string::replace(char c, unsigned int position){ // replace single character
+        if(position >= current_length){ // validate position
             throw std::out_of_range("Index out of range");
         }
-        characters[position] = c;
+        characters[position] = c; // replace character
     }
 
     void string::replace(const string& source, unsigned int position){
-        if(position >= current_length){
+        if(position >= current_length){  // validate position
             throw std::out_of_range("Index out of range");
         }
-        if(source.current_length + position > current_length){
+        if(source.current_length + position > current_length){ // ensure enough space
             reserve(allocated * 2);
         }
-        for(auto i = 0; i < source.current_length; i++){
+        for(auto i = 0; i < source.current_length; i++){ // copy source characters
             characters[position + i] = source.characters[i];
         }
     }
 
-    char string::operator [](size_t position) const{
+    char string::operator [](size_t position) const{    // access character at position
         if(position >= current_length){
             throw std::out_of_range("Index out of range");
-        }
+        } 
         return characters[position];
     }
 
-    int string::search(char c) const{
-        for(auto i = 0; i < current_length; i++){
+    int string::search(char c) const{   // search for character
+        for(auto i = 0; i < current_length; i++){ // linear search
             if(characters[i] == c){
                 return i;
             }
@@ -152,69 +151,69 @@ namespace coen79_lab5{
         return -1;
     }
 
-    int string::search(const string& substring) const{
-        char *addr = std::strstr(characters, substring.characters);
-        if(addr != nullptr){
-            return addr - characters;
+    int string::search(const string& substring) const{  // search for substring
+        char *addr = std::strstr(characters, substring.characters); // find substring
+        if(addr != nullptr){    // found
+            return addr - characters; // calculate index
         }
         return -1;
     }
 
     unsigned int string::count(char c) const{
-        unsigned int cnt = 0;
+        unsigned int cnt = 0;   // count occurrences of character
         for(auto i = 0; i < current_length; i++){
-            if(characters[i] == c){
+            if(characters[i] == c){ // match found
                 cnt++;
             }
         }
         return cnt;
     }
 
-    std::ostream& operator <<(std::ostream& outs, const string& source){
-        outs << source.characters;
+    std::ostream& operator <<(std::ostream& outs, const string& source){ // output string
+        outs << source.characters; // output characters
         return outs;
     }
 
-    bool operator ==(const string& s1, const string& s2){
-        if(s1.current_length != s2.current_length){
+    bool operator ==(const string& s1, const string& s2){ // equality operator
+        if(s1.current_length != s2.current_length){ // lengths differ
             return false;
         }
-        return std::strncmp(s1.characters, s2.characters, s1.current_length) == 0;
+        return std::strncmp(s1.characters, s2.characters, s1.current_length) == 0;  // compare characters
         
     }
 
-    bool operator !=(const string& s1, const string& s2){
-        return !(s1 == s2);
+    bool operator !=(const string& s1, const string& s2){   // inequality operator
+        return !(s1 == s2); // negate equality
     }
 
     bool operator > (const string& s1, const string& s2){
-        return std::strncmp(s1.characters, s2.characters, std::min(s1.current_length, s2.current_length)) > 0;
+        return std::strncmp(s1.characters, s2.characters, std::min(s1.current_length, s2.current_length)) > 0; // lexicographical comparison
     }
 
     bool operator < (const string& s1, const string& s2){
-        return (s2 > s1);
+        return (s2 > s1); // reuse greater than
     }
 
     bool operator >=(const string& s1, const string& s2){
-        if(s1 == s2){ return true; }
-        return s1 > s2;
+        if(s1 == s2){ return true; } // equal case
+        return s1 > s2; // greater than case
     }
 
     bool operator <=(const string& s1, const string& s2){
-        if(s1 == s2){ return true; }
-        return s2 > s1;
+        if(s1 == s2){ return true; } // equal case
+        return s2 > s1; //  less than case
     }
 
     string operator +(const string& s1, const string& s2){
-        string ret_string(s1);
-        ret_string += s2;
-        return ret_string;
+        string ret_string(s1); // start with first string
+        ret_string += s2; // append second string
+        return ret_string;// return concatenated result
     }
 
     string operator +(const string& s1, const char addend[]){
-        string ret_string(s1);
-        ret_string += addend;
-        return ret_string;
+        string ret_string(s1);  // start with first string
+        ret_string += addend; // append C-string
+        return ret_string; // return concatenated result
     }
 
     std::istream& operator >> (std::istream& ins, string& target){

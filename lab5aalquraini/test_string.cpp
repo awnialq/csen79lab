@@ -75,21 +75,21 @@ int main(){
 
 
     try{
-        default_str.replace(char_str, 10); // Intentionally out of range
+        default_str.replace(char_str, 100); // Intentionally out of range
     }
     catch(const std::out_of_range& e){
         std::cout << "Caught purposeful out of range exception when replacing: " << e.what() << std::endl;
     }
 
     try{
-        default_str.replace('B', 10); // Intentionally out of range
+        default_str.replace('B', 100); // Intentionally out of range
     }
     catch(const std::out_of_range& e){
         std::cout << "Caught purposeful out of range exception when replacing: " << e.what() << std::endl;
     }
 
     try{
-        char c = default_str[10]; // Intentionally out of range
+        char c = default_str[100]; // Intentionally out of range
     }
     catch(const std::out_of_range& e){
         std::cout << "Caught purposeful out of range exception when accessing character: " << e.what() << std::endl;
