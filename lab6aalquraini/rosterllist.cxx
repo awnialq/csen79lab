@@ -17,7 +17,11 @@ namespace csen79 {
 		head = nullptr;
 	}
 	RosterLList::~RosterLList() {
-		if(head != nullptr){ delete head;}
+		while(head != nullptr){
+			Node *temp = head;
+			head = head->next;
+			delete temp; 
+		}
 	}
 
 	RosterLList::Node::Node(){
@@ -27,11 +31,7 @@ namespace csen79 {
 		data = t;
 		next = nullptr;
 	}
-	RosterLList::Node::~Node(){
-		if(next != nullptr){
-			delete next;
-		}
-	}
+	RosterLList::Node::~Node(){}
 
 
 	RosterLList::iterator RosterLList::begin(){
@@ -61,9 +61,12 @@ namespace csen79 {
 	void RosterLList::erase(Person::ID_t id) {
 		Node *n = head;
 		while(n != nullptr && n->next != nullptr){
-			if(n->next->data->getID() == id){
-				
+			if(n->next->data.getID() == id){
+				Node *temp = n->next;
+				n->next = n->next->next;
+				delete temp;
 			}
+			n = n->next;
 		}
 	}
 
