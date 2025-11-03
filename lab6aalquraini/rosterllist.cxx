@@ -59,22 +59,11 @@ namespace csen79 {
 	}
 
 	void RosterLList::erase(Person::ID_t id) {
-		if(head == nullptr){
-			return;
-		}
-		if(head->data.getID() == id){
-			delete head;
-			head = head->next;
-		}
 		Node *n = head;
-		while(n->next != nullptr){
-			if(n->next->data.getID() == id){
-				Node *temp = n->next;
-				n->next = n->next->next;
-				delete temp;
-				break;
+		while(n != nullptr && n->next != nullptr){
+			if(n->next->data->getID() == id){
+				
 			}
-			n = n->next;
 		}
 	}
 
