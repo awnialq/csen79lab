@@ -69,9 +69,9 @@ namespace csen79 {
 		Node *n = head;
 		while(n->next != nullptr){
 			if(n->next->data.getID() == id){
-				Node *temp = n->next->next;
-				delete n->next;
-				n->next = temp;
+				Node *temp = n->next;
+				n->next = n->next->next;
+				delete temp;
 				break;
 			}
 			n = n->next;
