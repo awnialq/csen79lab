@@ -7,7 +7,7 @@
  *	4. For 'X' command, read a Person::ID_t from the input stream and erase the corresponding Person object from the RosterLList object
  *	5. For 'L' command, print the entire roster using the iterator defined in RosterLList
  *  6. Handle exceptions where necessary
- * 	7. Edgecases should be tested in the lab3sampleinput.txt file (Removing head)
+ * 	7. Follow the format we defined to write a testing file called lab3sampleinput.txt that should test edgecases to ensure your program works in totality
  */
 #include <string>
 #include <iostream>

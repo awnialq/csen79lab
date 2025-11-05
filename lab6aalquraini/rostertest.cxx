@@ -11,6 +11,10 @@
 
 namespace csen79 {
 
+/*
+*   Implementation that I described in rosterllistmain.cxx
+*/
+
 void RosterLList::testRoster() {
     Person t;
 	std::string cmd;
