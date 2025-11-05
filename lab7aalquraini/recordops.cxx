@@ -11,13 +11,13 @@
 namespace csen79 {
 
     bool Record::operator==(const struct tm &time){
-        return birth.tm_mon == time.tm_mon;
+        return birth.tm_mon == time.tm_mon; //compares the months of the record and of a specifc struct tm variable
     }
     bool Record::operator==(const std::pair<std::string, std::string> &fNameLname){
-        return (first == fNameLname.first) && (last == fNameLname.second);
+        return (first == fNameLname.first) && (last == fNameLname.second);  //compares the first name and last name to make sure it matches
     }
 
     bool Record::operator<(const Record &rec){
-        return last < rec.last;
+        return last < rec.last; //compares the last name the two records
     }
 }

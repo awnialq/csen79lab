@@ -11,10 +11,11 @@
 
 namespace csen79 {
 
-    struct cmpBMI{
-    const bool operator()(const Record &rec1, const Record &rec2) {
+    struct cmpBMI{  //functor struct
+    const bool operator()(const Record &rec1, const Record &rec2) { //ascending order bmi comparisson by overloading the () operator
         return rec1.getBMI() < rec2.getBMI();
-    }
+    }  
+
 };
 
 }
@@ -41,15 +42,16 @@ int main(void) {
 
     cout << "People born in March: " << endl;
     auto it = records.begin();
-    struct tm *march = (struct tm*)malloc(sizeof(struct tm));
-    march->tm_mon = 2;
-    while(it != records.end()){
-        it = std::find(it, records.end(), *march);
-        if(it != records.end()){
+    struct tm march;    //makes a new struct tm
+    march.tm_mon = 2;   //sets  the month to march
+    while(it != records.end()){ 
+        it = std::find(it, records.end(), march);   // uses the march to find the next instance of march in the whole vector
+        if(it != records.end()){    //when you find a record with march as its birth month, print it out and increment the iterator to the next element and then find the next element from that point on
             cout << "\t" << *it << endl;
             ++it;
         }
     }
+
 
     //finding if "Lily Liu" exists in the dataset
 
@@ -59,7 +61,7 @@ int main(void) {
 
     std::string found = (std::find(records.begin(), records.end(), lilyLiu) != records.end()) ? "yes" : "no";
 
-    cout << "\nIs \"Lily Liu\" in the dataset?: " << found << endl;
+    cout << "\nIs \"" << lilyLiu.first << " " << lilyLiu.second << "\" in the dataset?: " << found << endl;
 
     //print the students out after sorting it by last name
 
@@ -75,15 +77,15 @@ int main(void) {
 
     //print the students out in ascending order of bmi
 
-    cmpBMI bmiFunctor;
+    cmpBMI bmiFunctor;  //create functor
     
     cout << "\nSorted by BMI in ascending order: " << endl;
 
-    std::sort(records.begin(), records.end(), bmiFunctor);
+    std::sort(records.begin(), records.end(), bmiFunctor);  //pass the functor into sort such that it uses that for the comparison
 
     it = records.begin();
     while(it != records.end()){
-        cout << "\t" << *it << endl;
+        cout << "\t" << *it  << " BMI: " << it->getBMI() << endl;
         ++it;
     }
 
