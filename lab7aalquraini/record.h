@@ -7,6 +7,7 @@
  */
 #ifndef RECORD_H
 #define RECORD_H
+
 namespace csen79 {
 
 class Record {
@@ -14,12 +15,13 @@ public:
     static constexpr int EpochYear = 1900;
     const float getBMI() const { return weight / height / height * 703;}
     
-    // comparison operators to be declare here
+    bool operator==(const struct tm &month);
+    friend bool operator<(const Record &rec1, const Record &rec2);
 
 private:
     std::string first;
     std::string last;
-    std::tm birth;
+    struct tm birth;
     float weight;
     int height;
 

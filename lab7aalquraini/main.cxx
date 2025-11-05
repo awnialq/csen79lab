@@ -32,7 +32,19 @@ int main(void) {
             records.push_back(r);
     }
 
-    // Your code for the assignment here
+    //finding people who were born in march
+
+    cout << "People born in March: " << endl;
+    auto it = records.begin();
+    struct tm *march = (struct tm*)malloc(sizeof(struct tm));
+    march->tm_mon = 2;
+    while(it != records.end()){
+        it = std::find(it, records.end(), *march);
+        if(it != records.end()){
+            cout << "\t" << *it << endl;
+            ++it;
+        }
+    }
 
     return EXIT_SUCCESS;
 }

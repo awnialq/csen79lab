@@ -9,4 +9,11 @@
 #include "record.h"
 
 namespace csen79 {
+
+    bool Record::operator==(const struct tm &time){
+        return birth.tm_mon == time.tm_mon;
+    }
+    bool operator<(const Record &rec1, const Record &rec2){
+
+    }
 }
