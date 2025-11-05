@@ -46,5 +46,27 @@ int main(void) {
         }
     }
 
+    //finding if "Lily Liu" exists in the dataset
+
+    std::pair<std::string, std::string> lilyLiu;
+    lilyLiu.first = "Lily";
+    lilyLiu.second = "Liu";
+
+    std::string found = (std::find(records.begin(), records.end(), lilyLiu) != records.end()) ? "yes" : "no";
+
+    cout << "\nIs \"Lily Liu\" in the dataset?: " << found << endl;
+
+    //print the students out after sorting it by last name
+
+    std::sort(records.begin(), records.end());
+
+    cout << "\nSorted by last name: " << endl;
+
+    it = records.begin();
+    while(it != records.end()){
+        cout << "\t" << *it << endl;
+        ++it;
+    }
+
     return EXIT_SUCCESS;
 }

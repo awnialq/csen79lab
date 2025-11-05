@@ -16,7 +16,8 @@ public:
     const float getBMI() const { return weight / height / height * 703;}
     
     bool operator==(const struct tm &month);
-    friend bool operator<(const Record &rec1, const Record &rec2);
+    bool operator==(const std::pair<std::string, std::string> &fNameLname);
+    bool operator<(const Record &rec);
 
 private:
     std::string first;

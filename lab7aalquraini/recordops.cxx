@@ -13,7 +13,11 @@ namespace csen79 {
     bool Record::operator==(const struct tm &time){
         return birth.tm_mon == time.tm_mon;
     }
-    bool operator<(const Record &rec1, const Record &rec2){
+    bool Record::operator==(const std::pair<std::string, std::string> &fNameLname){
+        return (first == fNameLname.first) && (last == fNameLname.second);
+    }
 
+    bool Record::operator<(const Record &rec){
+        return last < rec.last;
     }
 }
