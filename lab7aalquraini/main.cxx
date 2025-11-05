@@ -11,9 +11,14 @@
 
 namespace csen79 {
 
-// Here you declare/define BMI comparitor and the class for the functor
+    struct cmpBMI{
+    const bool operator()(const Record &rec1, const Record &rec2) {
+        return rec1.getBMI() < rec2.getBMI();
+    }
+};
 
 }
+
 
 using namespace std;
 using namespace csen79;
@@ -60,7 +65,21 @@ int main(void) {
 
     std::sort(records.begin(), records.end());
 
-    cout << "\nSorted by last name: " << endl;
+    cout << "\nSorted by last name in ascending order: " << endl;
+
+    it = records.begin();
+    while(it != records.end()){
+        cout << "\t" << *it << endl;
+        ++it;
+    }
+
+    //print the students out in ascending order of bmi
+
+    cmpBMI bmiFunctor;
+    
+    cout << "\nSorted by BMI in ascending order: " << endl;
+
+    std::sort(records.begin(), records.end(), bmiFunctor);
 
     it = records.begin();
     while(it != records.end()){
