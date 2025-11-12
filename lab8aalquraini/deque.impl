@@ -55,7 +55,8 @@ namespace csen79_lab8
         block_size = source.block_size;
         
         // Create a new array of block pointers
-		// STUDENT WORK...
+		block_pointers = new value_type *[bp_array_size];
+        
         
         // Copy the data blocks of "source" object
         for (size_type bp_array_index = 0; bp_array_index < source.bp_array_size; ++bp_array_index)
@@ -68,10 +69,12 @@ namespace csen79_lab8
             else
             {
                 //If this is the first_bp of source, then set the first_bp of this deque
-				// STUDENT WORK...
+				if(source.block_pointers[bp_array_index] == source.first_bp){
+                    first_bp = source.first_bp;
+                }
                 
                 //If this is the last_bp of source, then set the last_bp of this deque
-				// STUDENT WORK...
+				if()
                 
                 // Create a data block
                 block_pointers[bp_array_index] = new value_type [block_size];
