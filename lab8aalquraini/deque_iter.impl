@@ -1,0 +1,73 @@
+// CSEN, SCU
+// Implementation for deque_iterator
+namespace csen79_lab8
+{
+    template <class Item>
+	bool deque_iterator<Item>::operator ==(const deque_iterator<Item> &other) const
+	{
+		return false; // STUDENT WORK...
+	}
+
+    template <class Item>
+	deque_iterator<Item>& deque_iterator<Item>::operator ++( ) // Prefix ++
+	{
+		// The cursor cannot move forward, simply return the iterator
+		if (cursor == nullptr)
+			return *this;
+		
+		// There is no item after the current item. Set the variables. Return the itertor.
+		if (cursor == back_ptr)
+		{
+			cursor = nullptr;
+			current_boundary = nullptr;
+			current_block_pointer = nullptr;
+			return *this;
+		}
+		
+		// Move to the next data block
+		if (cursor == current_boundary)
+		{
+			// STUDENT WORK...
+		}
+		// Move forward
+		else
+		{
+			// STUDENT WORK...
+		}
+		
+		return *this;
+	}
+
+    template <class Item>
+	deque_iterator<Item> deque_iterator<Item>::operator ++(int) // Postfix ++
+	{
+		deque_iterator original;
+		original = *this;
+		
+		// The cursor cannot move forward, simply return the iterator
+		if (cursor == nullptr)
+			return original;
+		
+		// There is no item after the current item. Set the variables. Return the itertor.
+		if (cursor == back_ptr)
+		{
+			cursor = nullptr;
+			current_boundary = nullptr;
+			current_block_pointer = nullptr;
+			return original;
+		}
+		
+		// Move to the next data block
+		if (cursor == current_boundary)
+		{
+			// STUDENT WORK...
+		}
+		// Move forward
+		else
+		{
+			// STUDENT WORK...
+		}
+		
+		return original;
+	}
+}
