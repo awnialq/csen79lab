@@ -194,9 +194,9 @@ namespace coen79_lab9
     {
         if (node_ptr != NULL)
         {
-            inorder(f, node_ptr->left);
-            std::cout << node_ptr->data << " " << std::endl;
-            inorder(f, node_ptr->right);
+            inorder(f, node_ptr->left());
+            f(node_ptr->data());
+            inorder(f, node_ptr->right());
         }
     }
     
@@ -205,9 +205,9 @@ namespace coen79_lab9
     // Library facilities used: cstdlib
     {
         if(node_ptr != NULL){
-            postorder(f, node_ptr->left);
-            postorder(f, node_ptr->right);
-            std::cout << node_ptr->data << " " << std::endl;
+            postorder(f, node_ptr->left());
+            postorder(f, node_ptr->right());
+            f(node_ptr->data());
         }
     }
     
@@ -216,9 +216,9 @@ namespace coen79_lab9
     // Library facilities used: cstdlib
     {
         if(node_ptr != NULL){
-            std::cout << node_ptr->data << " " << std::endl;
-            preorder(f, node_ptr->left);
-            preorder(f, node_ptr->right);
+            f(node_ptr->data());
+            preorder(f, node_ptr->left());
+            preorder(f, node_ptr->right());
         }
     }
     
@@ -246,7 +246,11 @@ namespace coen79_lab9
             child = root_ptr->left( );
             tree_clear( child );
             
-            // STUDENT WORK
+            child = root_ptr->right();
+            tree_clear(child);
+
+            delete root_ptr;
+
         }
     }
     
@@ -262,8 +266,10 @@ namespace coen79_lab9
             return NULL;
         else
         {
-            // STUDENT WORK
+            l_ptr = tree_copy(root_ptr->left());
+            r_ptr = tree_copy(root_ptr->right());
         }
+        return new binary_tree_node<Item>(root_ptr->data(),l_ptr, r_ptr);
     }
     
     
@@ -274,7 +280,7 @@ namespace coen79_lab9
         if (node_ptr == NULL)
             return 0;
         else
-            // STUDENT WORK
+            return 1 + tree_size(node_ptr->left()) + tree_size(node_ptr->right());
     }
 }
 
