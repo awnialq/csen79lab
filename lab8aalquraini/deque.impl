@@ -74,7 +74,9 @@ namespace csen79_lab8
                 }
                 
                 //If this is the last_bp of source, then set the last_bp of this deque
-				if()
+				if(source.block_pointers[bp_array_index] == source.last_bp){
+                    last_bp = source.last_bp;
+                }
                 
                 // Create a data block
                 block_pointers[bp_array_index] = new value_type [block_size];
@@ -82,7 +84,13 @@ namespace csen79_lab8
                 // Copy the elements, and set "front_ptr" and "back_ptr" if appropriate
                 for (size_type block_item_index = 0; block_item_index < block_size; ++block_item_index)
                 {
-					// STUDENT WORK...
+					block_pointers[bp_array_index][block_item_index] = source.block_pointers[bp_array_index][block_item_index];
+                    if(&source.block_pointers[bp_array_index][block_item_index] == source.front_ptr){
+                        front_ptr = &block_pointers[bp_array_index][block_item_index];
+                    }
+                    else if(&source.block_pointers[bp_array_index][block_item_index] == source.back_ptr){
+                        back_ptr = &block_pointers[bp_array_index][block_item_index];
+                    }
                 }
             }
         }
@@ -93,12 +101,17 @@ namespace csen79_lab8
     //DESTRUCTOR
     template <class Item>
     deque<Item>::~deque () {
-        
-        // Clear the data blocks
-		// STUDENT WORK...
+        //exit if block pointers is empty
+        if(block_pointers == null){
+            return;
+        }
+        //loop through and delete each element of each sub array
+        for(auto i = 0; i < bp_array_size; ++i){
+            delete [] block_pointers[i];
+        }
         
         // Clear the array of block pointers
-		// STUDENT WORK...
+		delete [] block_pointers;
         
         first_bp = last_bp = block_pointers_end = block_pointers = nullptr;
         front_ptr = back_ptr = nullptr;
