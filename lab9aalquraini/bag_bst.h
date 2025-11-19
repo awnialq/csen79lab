@@ -133,6 +133,11 @@ namespace coen79_lab9
         else
         {
             // STUDENT WORK
+            removed = root_ptr->data();
+            oldroot_ptr = root_ptr;
+            root_ptr = root_ptr->left();
+            delete oldroot_ptr;
+            return;
         }
     }
     
@@ -157,14 +162,13 @@ namespace coen79_lab9
         if (target < root_ptr->data( ))
         {   // Continue looking in the left subtree
             
-            // STUDENT WORK
+            bst_remove(root_ptr->left(), target);
             
         }
         
         if (target > root_ptr->data( ))
         {   // Continue looking in the right subtree
-            
-            // STUDENT WORK
+            bst_remove(root_ptr->right(), target);            
         }
         
         // Target found
@@ -172,7 +176,9 @@ namespace coen79_lab9
         {   // Target was found and there is no left subtree, so we can
             // remove this node, making the right child be the new root.
 
-            // STUDENT WORK
+            oldroot_ptr = root_ptr;
+            root_ptr = root_ptr->right();
+            delete oldroot_ptr;
         }
         
         // If code reaches this point, then we must remove the target from
@@ -180,6 +186,7 @@ namespace coen79_lab9
         // maximum item of left subtree.
 
         // STUDENT WORK
+        bst_remove_max(root_ptr->right(),root_ptr->data());
         
         return true;
     }
@@ -204,14 +211,14 @@ namespace coen79_lab9
         if (target < root_ptr->data( ))
         {   // Continue looking in the left subtree
             
-            // STUDENT WORK
+            bst_remove_all(root_ptr->left(), target);
             
         }
         
         if (target > root_ptr->data( ))
         {   // Continue looking in the right subtree
             
-            // STUDENT WORK
+            bst_remove_all(root_ptr->right(), target);
         }
         
         if (root_ptr->left( ) == NULL)
