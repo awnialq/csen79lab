@@ -1,5 +1,6 @@
 // IMPLEMENTATIONS
 
+#include <limits>
 namespace csen79_lab8
 {
     
@@ -56,6 +57,7 @@ namespace csen79_lab8
         
         // Create a new array of block pointers
 		block_pointers = new value_type *[bp_array_size];
+        block_pointers_end = block_pointers + (bp_array_size - 1);
         
         
         // Copy the data blocks of "source" object
@@ -69,13 +71,13 @@ namespace csen79_lab8
             else
             {
                 //If this is the first_bp of source, then set the first_bp of this deque
-				if(source.block_pointers[bp_array_index] == source.first_bp){
-                    first_bp = source.first_bp;
+				if(&source.block_pointers[bp_array_index] == source.first_bp){
+                    first_bp = block_pointers + bp_array_index;
                 }
                 
                 //If this is the last_bp of source, then set the last_bp of this deque
-				if(source.block_pointers[bp_array_index] == source.last_bp){
-                    last_bp = source.last_bp;
+				if(&source.block_pointers[bp_array_index] == source.last_bp){
+                    last_bp = block_pointers + bp_array_index;
                 }
                 
                 // Create a data block
@@ -88,7 +90,7 @@ namespace csen79_lab8
                     if(&source.block_pointers[bp_array_index][block_item_index] == source.front_ptr){
                         front_ptr = &block_pointers[bp_array_index][block_item_index];
                     }
-                    else if(&source.block_pointers[bp_array_index][block_item_index] == source.back_ptr){
+                    if(&source.block_pointers[bp_array_index][block_item_index] == source.back_ptr){
                         back_ptr = &block_pointers[bp_array_index][block_item_index];
                     }
                 }
@@ -170,7 +172,8 @@ namespace csen79_lab8
         Debug("Testing value - first_bp = " << *first_bp << std::endl);
         Debug("Testing value - last_bp = " << *last_bp << std::endl);
         
-        // Delete the existing array of block pointers
+        // Delete the existing array of bloc
+        // k pointers
         delete [] block_pointers;
         
         // Set the pointers
@@ -209,19 +212,30 @@ namespace csen79_lab8
         // There is at least one empty slot before the entry that front_ptr points to (in the same data block)
         else if (front_ptr != *first_bp)
         {
-
+            --front_ptr;
+            *front_ptr = entry;
         }
         
         // Data block has no room left before front_ptr; however, the array of block pointers has at least one available slot before first_bp to allocate a new data block
         else if ((*first_bp == front_ptr) && (first_bp != block_pointers))
         {
-			// STUDENT WORK
+			--first_bp;
+            *first_bp = new value_type [block_size];
+
+            front_ptr = (*first_bp) + (block_size - 1);
+            *front_ptr = entry;
         }
         
         // Data block has no room left before front_ptr; and the array of block pointers has no available slot before first_bp
         else if ((*first_bp == front_ptr) && (first_bp == block_pointers))
         {
-			// STUDENT WORK
+			reserve();  //make sure to alloate more space in the block pointer array
+
+            --first_bp; //first_bp now points to the new location
+            *first_bp = new value_type [block_size];
+            
+            front_ptr = (*first_bp) + (block_size - 1); //place the element in the middle of the block
+            *front_ptr = entry;
         }
     }
     
@@ -236,25 +250,43 @@ namespace csen79_lab8
             size_t bp_mid = floor(bp_array_size/2); // Get the mid point of the array of block pointers
             
             last_bp = first_bp = block_pointers + bp_mid  - 1;
-			// STUDENT WORK
+
+            *last_bp = new value_type [block_size];
+            value_type* mid = (*last_bp) + (block_size / 2);
+            front_ptr = back_ptr = mid;
+            *back_ptr = entry;
         }
         
         // There is at least one empty slot after the entry that back_ptr points to (in the same data block)
         else if (back_ptr != ((*last_bp) + (block_size - 1)))
         {
-			// STUDENT WORK
+            ++back_ptr;
+            *back_ptr = entry;
         }
         
         // Data block has no room left after back_ptr; however, the array of block pointers has at least one available slot below last_bp to allocate a new data block
         else if ((back_ptr == ((*last_bp) + (block_size - 1))) && (last_bp != block_pointers_end))
         {
-			// STUDENT WORK
+			// make a new block after last_bp
+            ++last_bp;
+            *last_bp = new value_type [block_size];
+
+            // put element at the start of the new block
+            back_ptr = *last_bp;
+            *back_ptr = entry;
         }
         
         // Data block has no room left after back_ptr; and the array of block pointers has no available slot after last_bp
         else if ((back_ptr == ((*last_bp) + (block_size - 1))) && (last_bp == block_pointers_end))
         {
-			// STUDENT WORK
+			// ensure there is enough space in the block_pointer array
+            reserve();
+
+            //last_bp points to the new location and make a new block after it
+            ++last_bp;
+            *last_bp = new value_type [block_size];
+            back_ptr = *last_bp;
+            *back_ptr = entry;
         }
     }
     
@@ -267,17 +299,25 @@ namespace csen79_lab8
         // This is the only entry in the deque; remove it and delete the data block
         if (back_ptr == front_ptr)
         {
-			// STUDENT WORK
+			delete [] (*first_bp);
+            *first_bp = nullptr;
+
+            front_ptr = back_ptr = nullptr;
+            first_bp = last_bp = nullptr;
         }
         // This is the last entry of the data block; move to the next block
         else if (front_ptr == ((*first_bp) + block_size - 1))
         {
-			// STUDENT WORK
+            delete [] (*first_bp);  //delete current block and move to the next one
+            *first_bp = nullptr;
+            ++first_bp;
+            //set front_ptr to the first element of new block
+            front_ptr = *first_bp;
         }
         // Simply move the pointer
         else
         {
-			// STUDENT WORK
+			++front_ptr;
         }
     }
     
@@ -293,7 +333,11 @@ namespace csen79_lab8
         }
         else if (back_ptr == *last_bp)
         {
-			// STUDENT WORK
+			delete [] (*last_bp);   //Delete last block and move to prev block
+            *last_bp = nullptr;
+            --last_bp;
+
+            back_ptr = (*last_bp) + (block_size - 1);   //new back_ptr will be the last element of the new last block
         }
         else
         {
