@@ -102,7 +102,7 @@ namespace csen79_lab8
     template <class Item>
     deque<Item>::~deque () {
         //exit if block pointers is empty
-        if(block_pointers == null){
+        if(block_pointers == nullptr){
             return;
         }
         //loop through and delete each element of each sub array
@@ -120,9 +120,13 @@ namespace csen79_lab8
     
     template <class Item>
     void deque<Item>::clear () {
-        
-        // Clear the data blocks
-		// STUDENT WORK...
+        if(block_pointers == nullptr) { return; }
+        for(auto i = 0; i < bp_array_size; ++i){
+            if(block_pointers[i] != nullptr){
+                delete [] block_pointers[i];
+                block_pointers[i] = nullptr;
+            }
+        }
         
         first_bp = last_bp = nullptr;
         front_ptr = back_ptr = nullptr;
@@ -195,14 +199,17 @@ namespace csen79_lab8
             // Both last_bp and first_bp point to the same
             // location of the array of block pointers
             last_bp = first_bp = block_pointers + bp_mid - 1;
+
+            (*first_bp) = new value_type [block_size];
             
-			// STUDENT WORK
+			(*first_bp)[block_size/2] = entry;
+            front_ptr = back_ptr = (*first_bp) + (block_size/2);
         }
         
         // There is at least one empty slot before the entry that front_ptr points to (in the same data block)
         else if (front_ptr != *first_bp)
         {
-			// STUDENT WORK
+
         }
         
         // Data block has no room left before front_ptr; however, the array of block pointers has at least one available slot before first_bp to allocate a new data block
