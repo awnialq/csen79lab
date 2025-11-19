@@ -53,6 +53,7 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "cstring": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "*.impl": "cpp"
     }
 }
