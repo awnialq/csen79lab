@@ -1,27 +1,17 @@
-# Makefile for building two targets: bagtest and bagexam (C++ sources)
-
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra -O2 -g
-LDLIBS =
+CXXFLAGS = -std=c++20
 
-SRCS_BAGTEST = bagtest.cpp
-OBJS_BAGTEST = $(SRCS_BAGTEST:.cpp=.o)
+HEADERS = bag_bst.h bintree.h
 
-SRCS_BAGEXAM = bagexam.cpp
-OBJS_BAGEXAM = $(SRCS_BAGEXAM:.cpp=.o)
+all: bagexam bagtest
 
-.PHONY: all clean bagtest bagexam
+bagexam: bagexam.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) -o bagexam bagexam.cpp
 
-all: bagtest bagexam
-
-bagtest: $(OBJS_BAGTEST)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDLIBS)
-
-bagexam: $(OBJS_BAGEXAM)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDLIBS)
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+bagtest: bagtest.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) -o bagtest bagtest.cpp
 
 clean:
-	rm -f *.o bagtest bagexam
+	rm -f bagexam bagtest
+
+.PHONY: all clean

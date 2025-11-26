@@ -58,6 +58,7 @@
 #ifndef COEN79_BST_BAG
 #define COEN79_BST_BAG
 
+#include <cstddef>
 #include <cstdlib>     // Provides NULL and size_t
 #include "bintree.h"   // Provides binary_tree_node and related functions
 
@@ -162,13 +163,13 @@ namespace coen79_lab9
         if (target < root_ptr->data( ))
         {   // Continue looking in the left subtree
             
-            bst_remove(root_ptr->left(), target);
+            return bst_remove(root_ptr->left(), target);
             
         }
         
         if (target > root_ptr->data( ))
         {   // Continue looking in the right subtree
-            bst_remove(root_ptr->right(), target);            
+            return bst_remove(root_ptr->right(), target);            
         }
         
         // Target found
@@ -179,6 +180,7 @@ namespace coen79_lab9
             oldroot_ptr = root_ptr;
             root_ptr = root_ptr->right();
             delete oldroot_ptr;
+            return true;
         }
         
         // If code reaches this point, then we must remove the target from
@@ -306,8 +308,8 @@ namespace coen79_lab9
             if (cursor->data( ) >= entry)
             {   // Go left
                 
-                if(cursor->left() == nullptr){
-                    cursor->left() = new binary_tree_node<Item>(entry);
+                if(cursor->left() == NULL){
+                    cursor->set_left(new binary_tree_node<Item>(entry));
                     done = true;
                 }
                 else{
@@ -318,8 +320,8 @@ namespace coen79_lab9
             else
             {   // Go right
 
-                if(cursor->right() == nullptr){
-                    cursor->right() = new binary_tree_node<Item>(entry);
+                if(cursor->right() == NULL){
+                    cursor->set_right(new binary_tree_node<Item>(entry));
                     done = true;
                 }
                 else{
@@ -377,7 +379,7 @@ namespace coen79_lab9
     {
         if(this == &source){ return; }
         tree_clear(root_ptr);
-        tree_copy(source.root_ptr); 
+        root_ptr = tree_copy(source.root_ptr); 
 
     }
     
@@ -387,7 +389,8 @@ namespace coen79_lab9
     {
         if (root_ptr == addend.root_ptr)
         {
-            
+            bag<Item> newBag = addend;
+            insert_all(newBag.root_ptr);
         }
         else
             insert_all(addend.root_ptr);
@@ -397,8 +400,7 @@ namespace coen79_lab9
     template <class Item>
     bag<Item> operator +(const bag<Item>& b1, const bag<Item>& b2)
     {
-        bag<Item> newBag;
-        newBag += b1;
+        bag<Item> newBag = b1;
         newBag += b2;
         return newBag;
     }
@@ -413,7 +415,7 @@ namespace coen79_lab9
     // have been added to the binary search tree of the bag that activated this
     // method.
     {
-        if (addroot_ptr != NULL)
+        if (addroot_ptr == NULL)
         {
             return;
         }

@@ -250,6 +250,7 @@ namespace coen79_lab9
             tree_clear(child);
 
             delete root_ptr;
+            root_ptr = NULL;
 
         }
     }
