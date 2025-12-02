@@ -240,6 +240,7 @@ namespace coen79_lab9
     void tree_clear(binary_tree_node<Item>*& root_ptr)
     // Library facilities used: cstdlib
     {
+        // clear left and right trees recursively
         binary_tree_node<Item>* child;
         if (root_ptr != NULL)
         {
@@ -267,9 +268,11 @@ namespace coen79_lab9
             return NULL;
         else
         {
+            //recurisvely build the tree
             l_ptr = tree_copy(root_ptr->left());
             r_ptr = tree_copy(root_ptr->right());
         }
+        //then return a new node
         return new binary_tree_node<Item>(root_ptr->data(),l_ptr, r_ptr);
     }
     
@@ -278,6 +281,7 @@ namespace coen79_lab9
     size_t tree_size(const binary_tree_node<Item>* node_ptr)
     // Library facilities used: cstdlib
     {
+        //if the root node is null, it means there are no more nodes after this point so return 0, otherwise return 1 + size of left subtree + size of right subtree.
         if (node_ptr == NULL)
             return 0;
         else

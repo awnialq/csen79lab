@@ -132,8 +132,7 @@ namespace coen79_lab9
         if (root_ptr->right( ) != NULL)
             bst_remove_max(root_ptr->right( ), removed);
         else
-        {
-            // STUDENT WORK
+        {   // yippee we found it; we now do the removal process
             removed = root_ptr->data();
             oldroot_ptr = root_ptr;
             root_ptr = root_ptr->left();
@@ -243,7 +242,7 @@ namespace coen79_lab9
         
         bst_remove_max(root_ptr->left(), root_ptr->data());
         
-        return 1 + bst_remove_all(root_ptr, target);
+        return 1 + bst_remove_all(root_ptr, target); //remove the rest of the copies after you found it.
     }
     
     
